@@ -102,6 +102,51 @@ To override the configuration props set on the `PopoverManager` for a particular
   });
 ```
 
+## Example: dropdown menu component
+
+```js
+export function Dropdown({ data, onSelect }) {
+
+  const renderContent = useCallback((closePopover) => {
+    const buttons = data.map((item) => (
+      <Button
+        title={item}
+        onPress={() => {
+          onSelect(item);
+          closePopover();
+        }}
+      />
+    ));
+    return (
+      <View style={styles.content}>{buttons}</View>
+    );
+  }, [data, onSelect]);
+
+  const { originRef, openPopover } = usePopoverView(renderContent);
+
+  return (
+    <View style={styles.container}>
+      <View ref={originRef} collapsable={false}>
+        <Button onPress={openPopover} title="Select item" />
+      </View>
+    </View>
+  );
+}
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={styles.flex}>
+      <PopoverManager>
+        <Dropdown
+          data={['One', 'Two', 'Three']}
+          onSelect={(item) => console.log('Selected', item)}
+        />
+      </PopoverManager>
+    </GestureHandlerRootView>
+  );
+}
+```
+
 ## TODO
 
 * Popover styling, padding, animation configuration
