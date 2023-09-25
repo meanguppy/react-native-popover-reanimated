@@ -3,9 +3,9 @@ import { StyleSheet, View, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Button } from 'react-native';
 import {
-  ClosePopover,
   PopoverManager,
   usePopoverView,
+  type ClosePopover,
 } from 'react-native-popover-reanimated';
 
 const styles = StyleSheet.create({

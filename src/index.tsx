@@ -8,7 +8,7 @@ import React, {
   type ReactNode,
   type RefObject,
 } from 'react';
-import { LayoutChangeEvent } from 'react-native';
+import type { LayoutChangeEvent } from 'react-native';
 import { View, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
