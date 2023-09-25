@@ -1,6 +1,6 @@
 {
   "name": "react-native-popover-reanimated",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Popover view built with react-native-reanimated",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
