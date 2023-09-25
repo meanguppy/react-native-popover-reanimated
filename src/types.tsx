@@ -32,8 +32,8 @@ export type RenderPopover = {
 };
 
 export type PopoverContextValue = null | {
-  updateIfActive(viewRef: RefObject<View>, popover: RenderPopover): void;
-  open(viewRef: RefObject<View>, popover: RenderPopover): void;
+  updateIfActive(originRef: RefObject<View>, popover: RenderPopover): void;
+  open(originRef: RefObject<View>, popover: RenderPopover): void;
   close(): void;
 };
 

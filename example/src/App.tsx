@@ -45,11 +45,11 @@ function MyComponent() {
     [counter]
   );
 
-  const { viewRef, openPopover } = usePopoverView(renderContent);
+  const { originRef, openPopover } = usePopoverView(renderContent);
 
   return (
     <View style={styles.container}>
-      <View ref={viewRef} collapsable={false}>
+      <View ref={originRef} collapsable={false}>
         <Button onPress={openPopover} title="Open popover" />
       </View>
     </View>

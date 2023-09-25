@@ -34,21 +34,21 @@ export const usePopoverView = (
   configOverrides?: Partial<PopoverConfig>
 ) => {
   const context = useContext(PopoverContext);
-  const viewRef = useRef<View>(null);
+  const originRef = useRef<View>(null);
 
   useEffect(() => {
-    context?.updateIfActive(viewRef, { renderContent, configOverrides });
+    context?.updateIfActive(originRef, { renderContent, configOverrides });
   }, [context, renderContent, configOverrides]);
 
   const openPopover = useCallback(() => {
-    context?.open(viewRef, { renderContent, configOverrides });
+    context?.open(originRef, { renderContent, configOverrides });
   }, [context, renderContent, configOverrides]);
 
   const closePopover = useCallback(() => {
     context?.close();
   }, [context]);
 
-  return { viewRef, openPopover, closePopover };
+  return { originRef, openPopover, closePopover };
 };
 
 export const PopoverManager = ({
@@ -71,14 +71,14 @@ export const PopoverManager = ({
 
   const context = useMemo(
     () => ({
-      updateIfActive(viewRef: RefObject<View>, popover: RenderPopover) {
-        if (!viewRef.current || !activeRef.current) return;
-        if (viewRef.current !== activeRef.current) return;
+      updateIfActive(originRef: RefObject<View>, popover: RenderPopover) {
+        if (!originRef.current || !activeRef.current) return;
+        if (originRef.current !== activeRef.current) return;
         setActivePopover(() => popover);
       },
-      open(viewRef: RefObject<View>, popover: RenderPopover) {
-        viewRef.current?.measure((_x, _y, w, h, px, py) => {
-          activeRef.current = viewRef.current;
+      open(originRef: RefObject<View>, popover: RenderPopover) {
+        originRef.current?.measure((_x, _y, w, h, px, py) => {
+          activeRef.current = originRef.current;
           hidden.value = true;
           origin.value = { x: px, y: py, w, h };
           setActivePopover(() => popover);
