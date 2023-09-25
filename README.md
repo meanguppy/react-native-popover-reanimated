@@ -26,6 +26,26 @@ Wrap your application render with the `PopoverManager` component. Ensure `react-
   );
 ```
 
+### Optional props
+
+Additional props can be passed to the `PopoverManager` to customize the positioning behavior of the popover view. The default values can be seen here:
+```js
+  <PopoverManager
+    originAnchor="bottom"
+    contentAnchor="top"
+    offsetX={0}
+    offsetY={0}
+    padding={16}>
+```
+
+* The anchors determine where the popover view will be presented
+  * `originAnchor` refers to the view marked as the origin (`originRef`)
+  * `contentAnchor` refers to the content rendered inside the popover view
+  * The two views will line up on their respective anchors. With the default configuration above, the center-top of the content view will sit on the center-bottom of the origin view.
+  * Possible values are: `'top-left' | 'top' | 'top-right' | 'left' | 'center' | 'right' | 'bottom-left' | 'bottom' | 'bottom-right'`
+* `offsetX`/`offsetY`: amount in pixels to offset the content view on the respective axis
+* `padding`: amount in pixels that the content view will be clamped to/spaced from the edge of the screen
+
 ## Usage
 
 ```js
@@ -45,14 +65,14 @@ import { usePopoverView } from 'react-native-popover-reanimated';
 2. Call the `usePopoverView` hook, passing the render function as the first argument, in order to access the popover handlers.
 
 ```js
-  const { viewRef, openPopover, closePopover } = usePopoverView(renderContent);
+  const { originRef, openPopover, closePopover } = usePopoverView(renderContent);
 ```
 
-3. Assign the `viewRef` as the `ref` prop of a native view, such as a `View`. This component determines the visual origin at which the popover will appear when the `openPopover` method is invoked. The component _must_ be backed by a native view in order to make use of the `measure` function. **React Native will attempt to optimize the native view hierarchy by not rendering a View it deems unnecessary. Add the `collapsable={false}` prop to prevent this from happening.**
+3. Assign the `originRef` as the `ref` prop of a native view, such as a `View`. This component determines the visual origin at which the popover will appear when the `openPopover` method is invoked. The component _must_ be backed by a native view in order to make use of the `measure` function. **React Native will attempt to optimize the native view hierarchy by not rendering a View it deems unnecessary. Add the `collapsable={false}` prop to prevent this from happening.**
 
 ```js
   return (
-    <View ref={viewRef} collapsable={false}>
+    <View ref={originRef} collapsable={false}>
       <Button onPress={openPopover} title="Open popover" />
     </View>
   );
@@ -62,7 +82,7 @@ import { usePopoverView } from 'react-native-popover-reanimated';
 
 ---
 
-The `renderContent` callback also provides a `closeDropdown` method as a parameter that can be used to trigger a close from within the popover content itself:
+The `renderContent` callback also provides a `closePopover` method as a parameter that can be used to trigger a close from within the popover content itself:
 
 ```js
   const renderContent = useCallback((closePopover) => (
@@ -73,9 +93,17 @@ The `renderContent` callback also provides a `closeDropdown` method as a paramet
   ), []);
 ```
 
+To override the configuration props set on the `PopoverManager` for a particular popover view, pass a partial configuration object as the second parameter of `usePopoverView`:
+
+```js
+  const { originRef, openPopover } = usePopoverView(renderContent, {
+    originAnchor: 'bottom-right',
+    padding: 8,
+  });
+```
+
 ## TODO
 
-* Popover origin anchoring configuration: top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right options for both the source view and popover
 * Popover styling, padding, animation configuration
 * Accessibility setup
 
