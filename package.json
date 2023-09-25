@@ -104,6 +104,7 @@
   },
   "release-it": {
     "git": {
+      "pushRepo": "upstream",
       "commitMessage": "chore: release ${version}",
       "tagName": "v${version}"
     },
