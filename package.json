@@ -40,13 +40,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/cboar/react-native-popover-reanimated",
+  "repository": "https://github.com/meanguppy/react-native-popover-reanimated",
   "author": "Joel Nuesch <joel@meanguppy.com> (https://github.com/cboar)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cboar/react-native-popover-reanimated/issues"
+    "url": "https://github.com/meanguppy/react-native-popover-reanimated/issues"
   },
-  "homepage": "https://github.com/cboar/react-native-popover-reanimated#readme",
+  "homepage": "https://github.com/meanguppy/react-native-popover-reanimated#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
