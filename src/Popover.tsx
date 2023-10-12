@@ -35,20 +35,37 @@ export const usePopoverView = (
 ) => {
   const context = useContext(PopoverContext);
   const originRef = useRef<View>(null);
+  const [active, setActive] = useState<boolean>(false);
+
+  const config: Partial<PopoverConfig> = useMemo(
+    () => ({
+      ...configOverrides,
+      onStateChange: (isActive: boolean) => {
+        if (active !== isActive) {
+          setActive(isActive);
+          configOverrides?.onStateChange?.(isActive);
+        }
+      },
+    }),
+    [configOverrides, active]
+  );
 
   useEffect(() => {
-    context?.updateIfActive(originRef, { renderContent, configOverrides });
-  }, [context, renderContent, configOverrides]);
+    context?.updateIfActive(originRef, {
+      renderContent,
+      configOverrides: config,
+    });
+  }, [context, renderContent, config]);
 
   const openPopover = useCallback(() => {
-    context?.open(originRef, { renderContent, configOverrides });
-  }, [context, renderContent, configOverrides]);
+    context?.open(originRef, { renderContent, configOverrides: config });
+  }, [context, renderContent, config]);
 
   const closePopover = useCallback(() => {
     context?.close();
   }, [context]);
 
-  return { originRef, openPopover, closePopover };
+  return { originRef, openPopover, closePopover, active };
 };
 
 export const PopoverManager = ({
@@ -59,6 +76,7 @@ export const PopoverManager = ({
   offsetY = 0,
   padding = 16,
 }: PopoverProps) => {
+  const prevPopover = useRef<null | RenderPopover>(null);
   const activeRef = useRef<null | View>(null);
   const [activePopover, setActivePopover] = useState<null | RenderPopover>(
     null
@@ -87,11 +105,19 @@ export const PopoverManager = ({
       close() {
         activeRef.current = null;
         hidden.value = true;
-        setActivePopover(() => null);
+        setActivePopover((current) => {
+          prevPopover.current = current;
+          return null;
+        });
       },
     }),
     [hidden, origin]
   );
+
+  useEffect(() => {
+    activePopover?.configOverrides?.onStateChange?.(true);
+    prevPopover?.current?.configOverrides?.onStateChange?.(false);
+  }, [activePopover]);
 
   const config: PopoverConfig = useMemo(
     () => ({

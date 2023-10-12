@@ -18,6 +18,7 @@ export type PopoverConfig = {
   offsetX: number;
   offsetY: number;
   padding: number;
+  onStateChange?: (active: boolean) => void;
 };
 
 export type PopoverProps = Partial<PopoverConfig> & {
