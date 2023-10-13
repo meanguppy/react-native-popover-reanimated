@@ -29,6 +29,7 @@ export type RenderContent = (closePopover: ClosePopover) => ReactNode;
 export type RenderPopover = {
   renderContent: RenderContent;
   configOverrides?: Partial<PopoverConfig> | undefined;
+  setActive?: (active: boolean) => void;
 };
 
 export type PopoverContextValue = null | {
