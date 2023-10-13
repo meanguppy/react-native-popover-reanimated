@@ -18,7 +18,6 @@ export type PopoverConfig = {
   offsetX: number;
   offsetY: number;
   padding: number;
-  onStateChange?: (active: boolean) => void;
 };
 
 export type PopoverProps = Partial<PopoverConfig> & {
@@ -30,6 +29,7 @@ export type RenderContent = (closePopover: ClosePopover) => ReactNode;
 export type RenderPopover = {
   renderContent: RenderContent;
   configOverrides?: Partial<PopoverConfig> | undefined;
+  setActive?: (active: boolean) => void;
 };
 
 export type PopoverContextValue = null | {

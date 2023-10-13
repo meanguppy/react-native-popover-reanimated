@@ -37,29 +37,17 @@ export const usePopoverView = (
   const originRef = useRef<View>(null);
   const [active, setActive] = useState<boolean>(false);
 
-  const config: Partial<PopoverConfig> = useMemo(
-    () => ({
-      ...configOverrides,
-      onStateChange: (isActive: boolean) => {
-        if (active !== isActive) {
-          setActive(isActive);
-          configOverrides?.onStateChange?.(isActive);
-        }
-      },
-    }),
-    [configOverrides, active]
-  );
-
   useEffect(() => {
     context?.updateIfActive(originRef, {
       renderContent,
-      configOverrides: config,
+      configOverrides,
+      setActive,
     });
-  }, [context, renderContent, config]);
+  }, [context, renderContent, configOverrides]);
 
   const openPopover = useCallback(() => {
-    context?.open(originRef, { renderContent, configOverrides: config });
-  }, [context, renderContent, config]);
+    context?.open(originRef, { renderContent, configOverrides, setActive });
+  }, [context, renderContent, configOverrides]);
 
   const closePopover = useCallback(() => {
     context?.close();
@@ -115,8 +103,11 @@ export const PopoverManager = ({
   );
 
   useEffect(() => {
-    activePopover?.configOverrides?.onStateChange?.(true);
-    prevPopover?.current?.configOverrides?.onStateChange?.(false);
+    activePopover?.setActive?.(true);
+    if (prevPopover.current) {
+      prevPopover.current?.setActive?.(false);
+      prevPopover.current = null;
+    }
   }, [activePopover]);
 
   const config: PopoverConfig = useMemo(
