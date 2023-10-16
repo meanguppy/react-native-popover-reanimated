@@ -51,9 +51,10 @@ function MyComponent() {
     <View style={styles.container}>
       <View ref={originRef} collapsable={false}>
         <Button
-          onPress={openPopover}
+          onPress={() => {
+            if (!active) openPopover();
+          }}
           title="Open popover"
-          color={active ? 'green' : 'blue'}
         />
       </View>
     </View>
