@@ -53,7 +53,12 @@ export const usePopoverView = (
     context?.close();
   }, [context]);
 
-  return { originRef, openPopover, closePopover, active };
+  return {
+    originRef,
+    openPopover: active ? () => {} : openPopover,
+    closePopover,
+    active,
+  };
 };
 
 export const PopoverManager = ({
@@ -125,11 +130,13 @@ export const PopoverManager = ({
     context.close();
   }, [context]);
 
-  const spy = Gesture.Manual().onTouchesDown((_, manager) => {
-    'worklet';
-    manager.fail();
-    runOnJS(closePopover)();
-  });
+  const spy = Gesture.Manual()
+    .cancelsTouchesInView(false)
+    .onTouchesUp((_, manager) => {
+      'worklet';
+      manager.fail();
+      runOnJS(closePopover)();
+    });
 
   const onLayoutView = useCallback(
     (evt: LayoutChangeEvent) => {
